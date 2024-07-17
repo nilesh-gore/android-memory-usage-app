@@ -1,21 +1,30 @@
 package com.example.androidmemoryusage.app
 
 import android.os.Bundle
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 
 class MainActivity : AppCompatActivity() {
+    var idList = mutableListOf<Int>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        logCurrentMemoryUsage("MainActivity.onCreate()")
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
-//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-//            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-//            insets
-//        }
+        logCurrentMemoryUsage("MainActivity.onCreate() after setContentView()")
 
+        Thread {
+            Thread.sleep(1000)
+            logCurrentMemoryUsage("MainActivity.onCreate() after 1 second delay")
+        }.start()
+    }
+
+    fun executeHeavyTask(view: View) {
+        for (i in 0..1000000) {
+            idList.add(i)
+        }
+        logCurrentMemoryUsage("MainActivity.executeHeavyTask()")
     }
 }
